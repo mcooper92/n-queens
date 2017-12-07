@@ -136,9 +136,7 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      //[0,0,0,0] i = 0 j = 0
-      
+    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {      
       var colIndex = majorDiagonalColumnIndexAtFirstRow;
       var size = this.get('n');
       var counter = 0;
@@ -170,10 +168,7 @@
       var hasConflict = false;
       for (var row = 0; row < size; row++) {
         for (var col = 0; col < size; col++) {
-          var f = this.hasMajorDiagonalConflictAt(col - row);
-          console.log(f);
-          //TODO
-          if (f) {
+          if (this.hasMajorDiagonalConflictAt(col - row)) {
             hasConflict = true;
           }
         }
@@ -189,8 +184,17 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var colIndex = minorDiagonalColumnIndexAtFirstRow;
-      
-      return false; // fixme
+      var rowIndex = 0;
+      var size = this.get('n');
+      var counter = 0;
+      for (var i = 0; i < size; i++) {
+        var value = this.get(i)[colIndex];
+        if (value !== undefined) {
+          counter = counter + value;
+        }
+        colIndex--;
+      }
+      return counter > 1; 
     },
 
     // test if any minor diagonals on this board contain conflicts
@@ -199,23 +203,23 @@
       var hasConflict = false;
       for (var row = 0; row < size; row++) { 
         for (var col = 0; col < size; col++) {
-            var colIndex;
-            var i = row; 
-            var j = col; 
-            while(!(i < 0 || j > 3)) { // (2, 0) (1,1)
-              i -= 1; 
-              j += 1;
-            }
-            colIndex = j;
-            if (this.hasMinorDiagonalConflictAt(colIndex)) {
-              hasConflict = true;
-            }
+          var colIndex;
+          var i = row; 
+          var j = col; 
+          while (!(i === 0)) { 
+            i -= 1; 
+            j += 1;
+          }
+          colIndex = j;
+          if (this.hasMinorDiagonalConflictAt(colIndex)) {
+            hasConflict = true;
           }
         }
-      return hasConflict;
       }
-      
+      return hasConflict;
     }
+      
+    
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
